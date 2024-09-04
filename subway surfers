@@ -1,0 +1,60 @@
+import random
+import time
+
+class Player:
+    def __init__(self):
+        self.score = 0
+        self.position = 0
+
+    def move(self):
+        self.position += 1
+        self.score += 1
+
+    def jump(self):
+        self.position += 5
+        self.score += 5
+
+    def crash(self):
+        print("Game Over! Your final score is:", self.score)
+        exit()
+
+class Obstacle:
+    def __init__(self):
+        self.position = random.randint(10, 20)
+
+    def is_collision(self, player):
+        if self.position == player.position:
+            return True
+        return False
+
+def game_loop():
+    player = Player()
+    obstacle = Obstacle()
+
+    while True:
+        print("Your current position:", player.position)
+        print("Obstacle position:", obstacle.position)
+        print("Your current score:", player.score)
+
+        action = input("Enter 'm' to move, 'j' to jump, or 'q' to quit: ")
+
+        if action == 'm':
+            player.move()
+        elif action == 'j':
+            player.jump()
+        elif action == 'q':
+            print("Thanks for playing! Your final score is:", player.score)
+            exit()
+        else:
+            print("Invalid input. Try again!")
+
+        if obstacle.is_collision(player):
+            player.crash()
+
+        time.sleep(1)  # pause for 1 second
+
+        obstacle.position -= 1  # move the obstacle closer
+        if obstacle.position < 0:
+            obstacle = Obstacle()  # reset the obstacle
+
+game_loop()
